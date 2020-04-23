@@ -1,33 +1,221 @@
 <?php
 	echo '
-	<html>
-		<head></head>
+	<!doctype html>
+    <html lang="en">
+		<head><meta charset="euc-kr">
+		    
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		    
+		    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		    <link rel="stylesheet" href="http://datathrust.net/581/chartjs/css/Chart.css">
+		    <link rel="stylesheet" href="http://datathrust.net/581/chartjs/css/Chart.min.css">
+		    
+		    
+		    
+		</head>
 		<title>CDU Temperature Sensor</title>
 		<body>
-		    <table>
-		        <tr>
-		            <th>SensorID</th>
-		            <th>Date</th>
-		            <th>Time</th>
-		            <th>Temperature</th>
-		            <th>Humidity</th>
-		        <tr>
-		'; // Echo
-		    
-		foreach ($arr as $reading)
-		{
-        echo "
-		        <tr>
-		            <td align='center'>".$reading->sensorid."</td>
-		            <td align='center'>".$reading->date."</td>
-		            <td align='center'>".$reading->time."</td>
-		            <td align='center'>".$reading->temperature."°</td>
-		            <td align='center'>".$reading->humidity."%</td>
-		        </tr>";
-		}
+		<header>
+              <div class="collapse bg-dark" id="navbarHeader">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm-8 col-md-7 py-4">
+                      <h4 class="text-white">About</h4>
+                      <p class="text-muted">IoT Notification sysmte designed for Rasberry PI to take temperature and humidity readings around the university.</p>
+                    </div>
+                    <div class="col-sm-4 offset-md-1 py-4">
+                      <h4 class="text-white">Contact</h4>
+                      <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Project on Github</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="navbar navbar-dark bg-dark box-shadow">
+                <div class="container d-flex justify-content-between">
+                  <a href="#" class="navbar-brand d-flex align-items-center">
+                    <strong>IoT Notification System</strong>
+                  </a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                </div>
+              </div>
+            </header>
+        
+            <main role="main">
+        
+              <section class="jumbotron text-center mb-0 bg-secondary">
+                <div class="container">
+                    <div class="row">
+                        <div class="col bg-danger pt-3 pb-2">
+                            <h4>Average Temperature</h4>
+                            <h4>'.$avgTemp.' 째C</h4>
+                        </div>
+                        <div class="col-2">
+                        </div>
+                        <div class="col bg-info pt-3 pb-2">
+                            <h4>AverageHumidity</h4>
+                            <h4>'.$avgHumid.'%</h4>
+                        </div>
+                    </div>
+                </div>
+              </section>
+        
+                <div class="containter-fluid text-center bg-light p-2">
+                    <h5>Current Temperature: '.$currentTemp.' 째C</h5>
+                </div>
+
+            <section class="text-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                                <script src="http://datathrust.net/581/chartjs/Chart.min.js"></script> ';//echo
+                                echo "
+                                <div class=\"chart-container\" style=\"position: relative; height:450px; width:450px\">
+                                <canvas id=\"tempChart\" width=\"100\" height=\"100\"></canvas>
+                                    <script>
+                                        var ctx = document.getElementById('tempChart').getContext('2d');
+                                        var chart = new Chart(ctx, {
+                                            // The type of chart we want to create
+                                            type: 'line',
+                                        
+                                            // The data for our dataset
+                                            data: {
+                                                labels: [   "; //echo    
+                                                foreach ($arr as $reading){
+                                                  echo "'$reading->time',"; 
+                                                };
+                                            echo "],
+                                                datasets: [{
+                                                    label: 'Temperature (째C)',
+                                                    backgroundColor: 'rgb(220, 53, 69)',
+                                                    borderColor: 'rgb(180, 32, 47)',
+                                                    data: [ "; // echo
+                                                foreach ($arr as $reading){
+                                                  echo "$reading->temperature,"; 
+                                                };
+                                            echo "]
+                                                }]
+                                            },
+                                        
+                                            // Configuration options go here
+                                            options: {                                                
+                                                scales: {
+                                                    yAxes: [{
+                                                        display: true,
+                                                        ticks: {
+                                                            suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                                                            suggestedMax: 45
+                                                        }
+                                                    }]
+                                                }}
+                                        });
+                                    </script>
+                                </div>
+                                ";
+            echo '                    
+                        </div>
+                        <div class="col"> '; // echo
+            echo "
+                                <div class=\"chart-container\" style=\"position: relative; height:450px; width:450px\">
+                                <canvas id=\"humidChart\" width=\"100\" height=\"100\"></canvas>
+                                    <script>
+                                        var ctx = document.getElementById('humidChart').getContext('2d');
+                                        var chart = new Chart(ctx, {
+                                            // The type of chart we want to create
+                                            type: 'line',
+                                        
+                                            // The data for our dataset
+                                            data: {
+                                                labels: [   "; //echo    
+                                                foreach ($arr as $reading){
+                                                  echo "'$reading->time',"; 
+                                                };
+                                            echo "],
+                                                datasets: [{
+                                                    label: 'Humidity (%)',
+                                                    backgroundColor: 'rgb(23, 162, 184)',
+                                                    borderColor: 'rgb(6, 122, 141)',
+                                                    data: [ "; // echo
+                                                foreach ($arr as $reading){
+                                                  echo "$reading->humidity,"; 
+                                                };
+                                            echo "]
+                                                }]
+                                            },
+                                        
+                                            // Configuration options go here
+                                            options: {    
+                                                scales: {
+                                                    yAxes: [{
+                                                        display: true,
+                                                        ticks: {
+                                                            suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                                                            suggestedMax: 100
+                                                        }
+                                                    }]
+                                                }
+                                            }
+                                        });
+                                    </script>
+                                </div>
+                                ";
+            echo '
+                    </div>
+                </div>
+                <div class ="container mt-5">
+                    <h5>Raw Data:</h5>
+                        <table class="table">
+                            <thead class="thead-dark">
+        		                <tr>
+                		            <th>Date</th>
+                		            <th>Time</th>
+                		            <th>Temperature</th>
+                		            <th>Humidity</th>
+                		        <tr>
+                		    </thead>
+        		'; //echo
+            		    
+            		foreach ($arr as $reading)
+            		{
+                    echo "
+            		        <tr>
+            		            <td align='center'>".$reading->date."</td>
+            		            <td align='center'>".$reading->time."</td>
+            		            <td align='center'>".$reading->temperature." 째C</td>
+            		            <td align='center'>".$reading->humidity."%</td>
+            		        </tr>";
+            		}
+            		
+            		/*print_r($arr);
+            		echo "</br>".$arr["feeds"]["0"]["field1"];
+            		echo "</br>something</br>";
+            		foreach($arr["feeds"] as $key=>$value){
+                        echo $key . "=>" . $value["field1"] . " | " . $value["field2"] ."<br>";
+                        $datetime =  (explode("T",$value["created_at"]));
+                        echo "Date : ". $datetime[0] . " | Time : " . rtrim($datetime[1], "Z");
+                        echo "</br>";
+                    }*/
+            		echo'
+		            </table>
+            </section>
+            </main>
+        
+            <footer class="text-muted text-center mt-5 pt-5">
+              <div class="container">
+                <p>Shannan Mikic, Syed Rafay Mukhtar, Syed Wajih Ul Hasan Shan, Trevor Pinto, Pengyang Yu, Jiayi Dai - 2020 </p>
+              </div>
+            </footer>
 		
-		echo'
-		    </table>
+		
+		
+		    
+		    
+		    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>    
 		</body>
 	</html>';
 ?>
