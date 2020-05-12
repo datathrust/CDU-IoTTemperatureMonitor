@@ -2,16 +2,12 @@
 	echo '
 	<!doctype html>
     <html lang="en">
-		<head><meta charset="euc-kr">
-		    
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		    
+		<head>
+		    <meta charset="euc-kr">
+		    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		    <link rel="stylesheet" href="http://datathrust.net/581/chartjs/css/Chart.css">
 		    <link rel="stylesheet" href="http://datathrust.net/581/chartjs/css/Chart.min.css">
-		    
-		    
-		    
 		</head>
 		<title>CDU Temperature Sensor</title>
 		<body>
@@ -48,7 +44,21 @@
         
               <section class="jumbotron text-center mb-0 bg-secondary">
                 <div class="container">
-                    <div class="row">
+                    <h3 class="text-white">Viewing Data for : '.$dateComparison.'</h3>
+                    <div class="form-group text-white">
+                        <form action="/index.php" method="post">
+                            Select Date:
+                            <select name="dateSelect">'; // echo
+                                foreach ($dateArray as $date)
+                                {
+                                    echo'<option value="'.$date.'">'.$date.'</option>';
+                                }
+                            echo'    
+                            </select>
+                            <input type="submit" value="Submit">
+                        </form>
+                    </div>
+                    <div class="row pt-5">
                         <div class="col bg-danger pt-3 pb-2">
                             <h4>Average Temperature</h4>
                             <h4>'.$avgTemp.' 째C</h4>
@@ -84,8 +94,9 @@
                                             // The data for our dataset
                                             data: {
                                                 labels: [   "; //echo    
-                                                foreach ($arr as $reading){
-                                                  echo "'$reading->time',"; 
+                                                foreach ($readingArray as $reading){
+                                                    $shortTime = substr($reading->time,0,-3);
+                                                  echo "'$shortTime',"; 
                                                 };
                                             echo "],
                                                 datasets: [{
@@ -93,7 +104,7 @@
                                                     backgroundColor: 'rgb(220, 53, 69)',
                                                     borderColor: 'rgb(180, 32, 47)',
                                                     data: [ "; // echo
-                                                foreach ($arr as $reading){
+                                                foreach ($readingArray as $reading){
                                                   echo "$reading->temperature,"; 
                                                 };
                                             echo "]
@@ -130,8 +141,9 @@
                                             // The data for our dataset
                                             data: {
                                                 labels: [   "; //echo    
-                                                foreach ($arr as $reading){
-                                                  echo "'$reading->time',"; 
+                                                foreach ($readingArray as $reading){
+                                                    $shortTime = substr($reading->time,0,-3);
+                                                    echo "'$shortTime',"; 
                                                 };
                                             echo "],
                                                 datasets: [{
@@ -139,7 +151,7 @@
                                                     backgroundColor: 'rgb(23, 162, 184)',
                                                     borderColor: 'rgb(6, 122, 141)',
                                                     data: [ "; // echo
-                                                foreach ($arr as $reading){
+                                                foreach ($readingArray as $reading){
                                                   echo "$reading->humidity,"; 
                                                 };
                                             echo "]
@@ -178,7 +190,7 @@
                 		    </thead>
         		'; //echo
             		    
-            		foreach ($arr as $reading)
+            		foreach ($readingArray as $reading)
             		{
                     echo "
             		        <tr>
@@ -188,16 +200,6 @@
             		            <td align='center'>".$reading->humidity."%</td>
             		        </tr>";
             		}
-            		
-            		/*print_r($arr);
-            		echo "</br>".$arr["feeds"]["0"]["field1"];
-            		echo "</br>something</br>";
-            		foreach($arr["feeds"] as $key=>$value){
-                        echo $key . "=>" . $value["field1"] . " | " . $value["field2"] ."<br>";
-                        $datetime =  (explode("T",$value["created_at"]));
-                        echo "Date : ". $datetime[0] . " | Time : " . rtrim($datetime[1], "Z");
-                        echo "</br>";
-                    }*/
             		echo'
 		            </table>
             </section>
@@ -208,11 +210,6 @@
                 <p>Shannan Mikic, Syed Rafay Mukhtar, Syed Wajih Ul Hasan Shan, Trevor Pinto, Pengyang Yu, Jiayi Dai - 2020 </p>
               </div>
             </footer>
-		
-		
-		
-		    
-		    
 		    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>    
