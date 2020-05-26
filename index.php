@@ -1,6 +1,6 @@
 <?php
-	include_once("controller/TemperatureController.php");
-	$controller = new TemperatureController();
+	include_once("controller/LoginController.php");
+	$controller = new LoginController();
 	$controller -> invoke();
 ?>
 

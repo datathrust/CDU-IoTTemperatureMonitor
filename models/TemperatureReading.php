@@ -1,5 +1,7 @@
 <?php
-	Class TemperatureReading
+    include_once("models/ReadingPrototype.php");
+	
+	Class TemperatureReading implements ReadingPrototype
 	{
 	    //public $sensorid;
 		public $date;
@@ -16,35 +18,25 @@
 			$this -> humidity = $humidity;
 		}
 		
-		public function GetAllReadings()
-		{
-			//Set thingspeak URL to pull data from.
-		    $url = "https://api.thingspeak.com/channels/1024699/feeds.json";
-		    
-		    //Run cURL to get JSON data and Decode into PHP array.
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $data = curl_exec($ch);
-            curl_close($ch);
-            
-            $jsondata = json_decode($data, true);
-            $arr = array();
-            
-            foreach($jsondata["feeds"] as $key=>$value){
-                $temp = $value["field1"];
-                $humid = $value["field2"];
-                $datetime =  (explode("T",$value["created_at"])); 
-                
-                $arr[$key] = new TemperatureReading($datetime[0], rtrim($datetime[1], "Z"), $temp, $humid);
-                //array_push($arr, "Something!");
-                
-                //echo $key . "=>" . $value["field1"] . " | " . $value["field2"] ."<br>";
-                //$datetime =  (explode("T",$value["created_at"]));
-                //echo "Date : ". $datetime[0] . " | Time : " . rtrim($datetime[1], "Z");
-                //echo "</br>";
-                    }
-            return $arr;
+		public function setDate ($date){
+		    $this -> date = $date;
 		}
+		
+		public function setTime($time){
+		    $this -> time = $time;
+		}
+		
+		public function setTemp($temp){
+		    $this -> temperature = $temp;
+		}
+		
+		public function setHumid($humid){
+		    $this -> humidity = $humid;
+		}
+
+		public function clone__ (){
+		    //Implement the clone method to allow for cloning.
+		}
+		
 	}
 ?>
