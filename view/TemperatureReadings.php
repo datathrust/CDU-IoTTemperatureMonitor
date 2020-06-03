@@ -67,7 +67,7 @@
 	echo '
                     <h3 class="text-white">Viewing Data for : '.$dateMinimum.' to '.$dateMaximum.'</h3>
                     <div class="form-group text-white">
-                        <form action="/index.php" method="post">
+                        <form action="/readings.php" method="post">
                             Select Date Range:
                             <select name="dateSelect-1">'; // echo
                                 foreach ($dateArray as $date)

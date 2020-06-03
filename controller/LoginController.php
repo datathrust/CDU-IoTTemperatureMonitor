@@ -14,7 +14,7 @@
             if($_SERVER["REQUEST_METHOD"] == "POST") {
               $user = $_POST['username'];
               $pass = $_POST['password'];
-
+              
               // Check username/password combination via function. 
               if(CheckCredentials($user, $pass) == 1) {
                 $_SESSION['login_user'] = $user;

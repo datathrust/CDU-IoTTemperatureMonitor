@@ -5,6 +5,7 @@
 	include_once("models/CalculateAverages.php");
 	include_once("models/GetWeather.php");
 
+
 	Class TemperatureController{
 		public $model;
 		
@@ -26,6 +27,7 @@
     		//Iterate on date, collect all unique dates
     		$dateError = 0; 
     		$dateArray = array();
+
     		foreach ($arr as $reading){
     		    if (in_array($reading->date, $dateArray))
     		        {
@@ -54,9 +56,9 @@
     		}
     		else
     		{
-    		    // Default to most recent date only. 
-    		    $dateMaximum = $dateArray[0];
-    		    $dateMinimum = $dateArray[0];
+    		    // Default to most recent date only. IE latest element in array. . 
+    		    $dateMaximum = $dateArray[count($dateArray)-1];
+    		    $dateMinimum = $dateArray[count($dateArray)-1];
     		}
     		
     		//Get all readings that match a specified date, add them to a new array.
